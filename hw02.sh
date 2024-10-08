@@ -63,15 +63,11 @@ done
 }
 
 pdf_listing() {
-    # diables case sensitivity
-    shopt -s nocaseglob
-    for file in *.pdf .*.pdf; do
-        if [ -e "$file" ]; then
+    for file in *.[Pp][Dd][Ff] .*.[Pp][Dd][Ff]; do
+        if [[ -e "$file" ]]; then
             pdf_files+=("$file")
         fi
     done
-    # enables it back
-    shopt -u nocaseglob
 }
 
 stdin_read() {
@@ -88,7 +84,7 @@ sentences_process() {
     # reads the input and stores it in text, plus replaces all \n with spaces
     text=$(tr '\n' ' ')
     # macthes the criteria for the regex
-    # exaplanation: starts with an uppercase letter, followed by any number of characters that aren .?! and ends with one of them
+    # explanation: starts with an uppercase letter, followed by any number of characters that aren .?! and ends with one of them
     echo "$text" | grep -o -E '[[:upper:]][^.!?]*[.!?]'
 }
 
@@ -99,13 +95,13 @@ if [[ $pdf_flag == true ]]; then
     pdf_files=()
     pdf_listing
     printf "%s\n" "${pdf_files[@]}"
-fi
 
-if [[ $number_flag == true ]]; then
+
+elif [[ $number_flag == true ]]; then
     stdin_read
-fi
 
-if [[ $sentence_flag == true ]]; then
+
+elif [[ $sentence_flag == true ]]; then
     sentences_process
 fi
 
